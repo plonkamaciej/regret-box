@@ -19,8 +19,10 @@
 4. **Set Environment Variables**:
    - Go to your app service settings
    - Add environment variables:
-     - `REDIS_URL`: `redis://redis.railway.internal:6379`
+     - `REDIS_URL`: Copy the full Redis connection URL from your Redis service (includes authentication)
      - `PORT`: `8080`
+   
+   **Note**: Railway automatically provides the `REDIS_URL` with authentication when you add a Redis database. You can find it in your Redis service's "Connect" tab.
 
 5. **Deploy**: Railway will automatically build and deploy!
 
@@ -86,3 +88,38 @@ Railway.app is the easiest option because:
 - ✅ Automatic builds and deployments
 - ✅ Easy environment variable management
 - ✅ Built-in monitoring and logs
+
+## 🔧 Troubleshooting
+
+### Redis Authentication Errors
+
+If you see `NOAUTH Authentication required` errors:
+
+1. **Check Redis URL format**: Make sure you're using the full Redis URL with credentials:
+   ```
+   redis://:password@host:port
+   # or
+   redis://username:password@host:port
+   ```
+
+2. **Railway.app**: Get the correct Redis URL from:
+   - Go to your Redis service
+   - Click "Connect" tab
+   - Copy the full connection string
+   - Set it as `REDIS_URL` environment variable
+
+3. **Local development**: If using local Redis with password:
+   ```bash
+   export REDIS_PASSWORD=your_password
+   export REDIS_URL=localhost:6379
+   ```
+
+### Build Failures
+
+- **Go version issues**: Ensure Go 1.22+ is used (automatic in Docker/cloud)
+- **Missing dependencies**: Run `go mod tidy` locally to verify
+
+### Connection Issues
+
+- **Port conflicts**: Change port in environment variables if needed
+- **Firewall**: Ensure ports 8080 and 6379 are open for local development

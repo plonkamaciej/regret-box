@@ -45,18 +45,42 @@ func main() {
 		redisURL = "localhost:6379"
 	}
 
-	rdb = redis.NewClient(&redis.Options{
-		Addr:     redisURL,
-		Password: "", // No password by default
-		DB:       0,
-	})
-
-	// Test Redis connection
-	_, err := rdb.Ping(ctx).Result()
-	if err != nil {
-		log.Fatalf("Failed to connect to Redis: %v", err)
+	// Parse Redis URL to extract auth info
+	var redisOpts *redis.Options
+	if strings.HasPrefix(redisURL, "redis://") || strings.HasPrefix(redisURL, "rediss://") {
+		// Parse full Redis URL (cloud platforms often provide this format)
+		opts, err := redis.ParseURL(redisURL)
+		if err != nil {
+			log.Fatalf("Failed to parse Redis URL: %v", err)
+		}
+		redisOpts = opts
+	} else {
+		// Simple host:port format (local development)
+		redisOpts = &redis.Options{
+			Addr:     redisURL,
+			Password: os.Getenv("REDIS_PASSWORD"), // Password from environment if needed
+			DB:       0,
+		}
 	}
-	log.Println("Connected to Redis successfully")
+
+	rdb = redis.NewClient(redisOpts)
+
+	// Test Redis connection with retry
+	maxRetries := 5
+	for i := 0; i < maxRetries; i++ {
+		_, err := rdb.Ping(ctx).Result()
+		if err == nil {
+			log.Println("Connected to Redis successfully")
+			break
+		}
+		
+		if i == maxRetries-1 {
+			log.Fatalf("Failed to connect to Redis after %d attempts: %v", maxRetries, err)
+		}
+		
+		log.Printf("Redis connection attempt %d failed: %v. Retrying in 2 seconds...", i+1, err)
+		time.Sleep(2 * time.Second)
+	}
 
 	// Get port from environment, default to 8080
 	port := os.Getenv("PORT")
