@@ -15,16 +15,30 @@
 3. **Add Redis**:
    - In your Railway project dashboard
    - Click "New" → "Database" → "Add Redis"
+   - Note the service name (usually "Redis")
 
 4. **Set Environment Variables**:
-   - Go to your app service settings
+   - Go to your app service settings → Variables tab
    - Add environment variables:
-     - `REDIS_URL`: Copy the full Redis connection URL from your Redis service (includes authentication)
+     - `REDIS_URL`: `${{Redis.REDIS_URL}}` (this references your Redis service)
      - `PORT`: `8080`
    
-   **Note**: Railway automatically provides the `REDIS_URL` with authentication when you add a Redis database. You can find it in your Redis service's "Connect" tab.
+   **Important**: Use the Railway template variable `${{Redis.REDIS_URL}}` to automatically reference your Redis service. Replace "Redis" with your actual Redis service name if different.
 
 5. **Deploy**: Railway will automatically build and deploy!
+
+#### Railway.app Troubleshooting:
+
+**If you see connection refused errors:**
+1. Check that your Redis service is running in the Railway dashboard
+2. Verify the environment variable is set to `${{Redis.REDIS_URL}}` (with your actual service name)
+3. Make sure both services are in the same project
+4. Check the logs for "Using Redis URL:" to see what URL is being used
+
+**Service Reference Format:**
+- If your Redis service is named "Redis": `${{Redis.REDIS_URL}}`
+- If your Redis service is named "redis-db": `${{redis-db.REDIS_URL}}`
+- The format is: `${{SERVICE_NAME.REDIS_URL}}`
 
 ### 2. DigitalOcean App Platform
 

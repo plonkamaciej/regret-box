@@ -43,24 +43,31 @@ func main() {
 	redisURL := os.Getenv("REDIS_URL")
 	if redisURL == "" {
 		redisURL = "localhost:6379"
+		log.Println("No REDIS_URL found, using localhost:6379")
+	} else {
+		log.Printf("Using Redis URL: %s", redisURL)
 	}
 
 	// Parse Redis URL to extract auth info
 	var redisOpts *redis.Options
 	if strings.HasPrefix(redisURL, "redis://") || strings.HasPrefix(redisURL, "rediss://") {
 		// Parse full Redis URL (cloud platforms often provide this format)
+		log.Println("Parsing Redis URL format")
 		opts, err := redis.ParseURL(redisURL)
 		if err != nil {
 			log.Fatalf("Failed to parse Redis URL: %v", err)
 		}
 		redisOpts = opts
+		log.Printf("Connecting to Redis at: %s", opts.Addr)
 	} else {
 		// Simple host:port format (local development)
+		log.Println("Using simple Redis format")
 		redisOpts = &redis.Options{
 			Addr:     redisURL,
 			Password: os.Getenv("REDIS_PASSWORD"), // Password from environment if needed
 			DB:       0,
 		}
+		log.Printf("Connecting to Redis at: %s", redisURL)
 	}
 
 	rdb = redis.NewClient(redisOpts)
