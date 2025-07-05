@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{regret: ''}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RegretBox - Anonymous Confessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script src="/static/script.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <header class="fade-in">
+      <h1>💌 RegretBox</h1>
+      <p class="subtitle">Share your anonymous regrets and read others'</p>
+      <div class="expiry-notice">
+        ⏰ All regrets vanish after 24 hours
+      </div>
+    </header>
+
+    <main class="card fade-in">
+      <form action="/submit" method="POST">
+        <div class="form-group">
+          <textarea 
+            name="regret" 
+            placeholder="What do you regret? Share it anonymously... It will disappear in 24 hours." 
+            x-model="regret" 
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn pulse">
+          📝 Submit Anonymously
+        </button>
+      </form>
+    </main>
+
+    <nav class="navigation">
+      <a href="/random" class="btn btn-secondary">🎲 Read Random Regret</a>
+      <a href="/popular" class="btn btn-secondary">🔥 Most Popular</a>
+    </nav>
+  </div>
+</body>
+</html>

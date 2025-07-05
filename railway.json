@@ -1,0 +1,15 @@
+{
+  "name": "regretbox",
+  "build": {
+    "commands": [
+      "go build -o regretbox ."
+    ]
+  },
+  "run": {
+    "command": "./regretbox"
+  },
+  "env": {
+    "PORT": "8080",
+    "REDIS_URL": "redis://redis:6379"
+  }
+}

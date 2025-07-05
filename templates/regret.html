@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonymous Regret - RegretBox</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/script.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <header class="fade-in">
+      <h1>💭 Anonymous Regret</h1>
+      <p class="subtitle">Someone shared their deepest regret</p>
+    </header>
+
+    <main class="card fade-in">
+      <div class="regret-content">
+        "{{.Text}}"
+      </div>
+      
+      <div class="regret-meta">
+        <div class="action-grid">
+          {{if .CanLike}}
+            <button class="like-button" onclick="likeRegret('{{.ID}}')">
+              ❤️ Like <span class="like-count" id="like-count">{{.Likes}}</span>
+            </button>
+          {{else}}
+            <span class="like-button disabled">
+              ❤️ Liked <span class="like-count" id="like-count">{{.Likes}}</span>
+            </span>
+          {{end}}
+          
+          <div class="navigation">
+            <a href="/" class="btn btn-secondary">📝 Share Your Own</a>
+            <a href="/random" class="btn btn-secondary">🎲 Read Another</a>
+            <a href="/popular" class="btn btn-secondary">🔥 Popular</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+.git
+.gitignore
+README.md
+.env
+.DS_Store
+node_modules
+*.log
+docker-compose.prod.yml
+deploy.sh
+nginx.conf
