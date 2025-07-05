@@ -71,6 +71,7 @@ Required for all deployments:
 ## 📋 Pre-deployment Checklist
 
 - [ ] Repository is public or accessible to deployment platform
+- [ ] Go 1.22+ is available (handled automatically by Docker/cloud platforms)
 - [ ] Environment variables are set correctly
 - [ ] Redis database is provisioned
 - [ ] Build commands are configured (usually automatic)
